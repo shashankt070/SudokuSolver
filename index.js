@@ -1,22 +1,48 @@
 const grid = document.querySelector('.main');
 const display = document.querySelector('.display');
-let arr = new Array(9).fill(0).map(() => new Array(9).fill(0)); 
-
-
-for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
+const solve = document.querySelector('#solve');
+const reset = document.querySelector('#reset');
+let arr = new Array(9);
+for(let i=0;i<9;i++)
+{
+    arr[i] = new Array(9);
+}
+function set(){
+for(let i=0;i<9;i++)
+{
+    for(let j = 0;j<9;j++)
+    {
         const input = document.createElement('input');
         input.type = 'number';
-        input.min = '1'; 
+        input.min = '1';
         input.max = '9';
         input.id = `input-${i}-${j}`;
         input.className = 'input';
         grid.appendChild(input);
     }
 }
+}
+set();
 
+solve.addEventListener('click', function(){
+    store();
+    solution();
+});
 
-function store() {
+reset.addEventListener('click', function(){
+   restore();
+})
+
+function restore()
+{
+    display.classList.remove('active');
+    grid.classList.remove('inactive');
+    grid.innerHTML = '';
+    set();
+}
+
+function store()
+{
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let input = document.querySelector(`#input-${i}-${j}`);
@@ -25,13 +51,8 @@ function store() {
     }
 }
 
-const button = document.querySelector('#solve');
-button.addEventListener('click', function () {
-    store();
-    solve();
-});
-
-async function solve() {
+async function solution()
+{
     let solved = await isItSudoku(arr);
     if (!solved) {
         alert('Invalid Sudoku');
@@ -52,7 +73,6 @@ async function solve() {
         }
     }
 }
-
 
 async function isItSudoku(matrix) {
     for (let i = 0; i < 9; i++) {
@@ -100,3 +120,6 @@ function isValid(row, col, k, matrix) {
     }
     return true; 
 }
+
+
+
