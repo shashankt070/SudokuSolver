@@ -25,8 +25,14 @@ for(let i=0;i<9;i++)
 set();
 
 solve.addEventListener('click', function(){
-    store();
+    let check = store();
+    if(check == true)
     solution();
+    else
+    {
+        grid.innerHTML = '';
+        set();
+    }
 });
 
 reset.addEventListener('click', function(){
@@ -43,12 +49,28 @@ function restore()
 
 function store()
 {
+    let check = true;
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
             let input = document.querySelector(`#input-${i}-${j}`);
             arr[i][j] = parseInt(input.value) || 0; 
+            if(arr[i][j] > 9)
+            {
+                alert('Value cannot be greater than 9');
+                check = false;
+                break;
+            }
+            if(arr[i][j] < 0)
+            {
+                alert('Value cannot be less than 1');
+                check = false;
+                break;
+            }
         }
+        if(check == false)
+        break;
     }
+    return check;
 }
 
 async function solution()
